@@ -7,6 +7,8 @@ function install_git() {
 
 function install_docker() {
     if ! command -v docker &> /dev/null; then
+        echo "Installing docker."
+
         # Add Docker's official GPG key:
         sudo apt update -y
         sudo apt install -y ca-certificates curl
@@ -42,9 +44,15 @@ function clone_dotfiles() {
     fi
 }
 
-echo "Installing dotfiles.";
-clone_dotfiles;
+function main() {
+    echo "Installing dotfiles.";
+    clone_dotfiles;
 
-ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
-ln -sf $HOME/.dotfiles/scripts $HOME/;
-echo "Installation successful";
+    install_all;
+
+    ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
+    ln -sf $HOME/.dotfiles/scripts $HOME/;
+    echo "Installation successful";
+}
+
+main "$@"

@@ -23,3 +23,4 @@ export PYTHONDONTWRITEBYTECODE=1
 source ~/scripts/docker_aliases.sh
 
 alias urltool='~/scripts/urlquote_tool.py'
+alias cat='batcat'
