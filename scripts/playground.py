@@ -45,7 +45,7 @@ def input_with_default(user_input: str, default_value: Any) -> Any:
     return user_input or default_value
 
 
-PLAYGROUND_PATH = Path.home() / "projects" / "playground"
+PLAYGROUND_PATH = Path.home() / "playground"
 
 def validate_playground(name: str) -> bool:
     return (PLAYGROUND_PATH / name).exists()
