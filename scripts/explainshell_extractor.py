@@ -6,7 +6,7 @@ import sys, urllib.parse
 
 raw_cmd = " ".join(sys.argv[1:])
 cmd = urllib.parse.quote(raw_cmd)
-url = "https://explainshell.local.net/explain?cmd=" + cmd
+url = "https://explainshell.com/explain?cmd=" + cmd
 
 r = requests.get(url, verify=False)
 if not r.ok:
