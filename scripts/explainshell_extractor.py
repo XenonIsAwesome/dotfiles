@@ -8,7 +8,7 @@ raw_cmd = " ".join(sys.argv[1:])
 cmd = urllib.parse.quote(raw_cmd)
 url = "https://explainshell.com/explain?cmd=" + cmd
 
-r = requests.get(url, verify=False)
+r = requests.get(url)
 if not r.ok:
     sys.exit("Failed to fetch explanation.")
 

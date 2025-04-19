@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # Functions
+source ~/mcservers/rcon.sh
+
 function correct-resolv() {
     # Run this to correct WSL's resolv.conf file (dns issue)
     sudo cp /etc/resolv.conf.correct /etc/resolv.conf
@@ -14,6 +16,17 @@ function mansplain () {
     fi
 
     python3 ~/scripts/explainshell_extractor.py $* | man -l -
+}
+
+function commando() {
+        package_names=()
+        for arg in "$@"; do
+                pkg_name=$(curl -sSfL "https://command-not-found.com/-/api/package/debian/${arg}")
+                package_names+=("$pkg_name")
+        done
+
+        packages="${package_names[*]}"
+        sudo apt install $packages
 }
 
 # Exports
