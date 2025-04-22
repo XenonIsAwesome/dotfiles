@@ -61,11 +61,11 @@ function main() {
     install_python_packages;
     install_misc;
 
-    if [ "$1" = "--no-omb" ]; then
-        ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
-    else
+    if [ "$1" = "--omb" ]; then
         bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)";
         ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
+    else
+        ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
     fi
 
 
