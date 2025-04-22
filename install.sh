@@ -1,8 +1,5 @@
 function install_git() {
-    if ! command -v git &> /dev/null; then
-        echo "Installing git.";
-        sudo apt install -y git;
-    fi
+    
 }
 
 function install_docker() {
@@ -28,27 +25,37 @@ function install_docker() {
     fi
 }
 
+function install_python_packages() {
+    sudo apt install -y python3-pip python3-bs4 python3-virtualenv
+}
+
 function install_misc() {
     sudo apt install -y bat
 }
 
-function install_all() {
-    install_docker;
-    install_misc;
-}
-
 function clone_dotfiles() {
-    install_git;
+    # Install git
+    if ! command -v git &> /dev/null; then
+        sudo apt install -y git;
+    fi;
+
+    # Clone repo
     if [ ! -d "${HOME}/.dotfiles" ]; then
         git clone http://github.com/XenonIsAwesome/dotfiles.git ~/.dotfiles;
     fi
+
+    # Update repo
+    pushd ~/.dotfiles 2>&1 >/dev/null
+    git pull
+    popd 2>&1 >/dev/null
 }
 
 function main() {
     echo "Installing dotfiles.";
     clone_dotfiles;
 
-    install_all;
+    install_docker;
+    install_misc;
 
     ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
     ln -sf $HOME/.dotfiles/scripts $HOME/;
