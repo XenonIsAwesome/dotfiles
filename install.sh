@@ -59,14 +59,13 @@ function main() {
     # installs
     install_docker;
     install_python_packages;
-    install_nvm;
     install_misc;
 
-    if [ "$1" == "--no-omb"]; then
+    if [ "$1" = "--no-omb" ]; then
         ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
     else
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)";
+        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;;
     fi
 
 
