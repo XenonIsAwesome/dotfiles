@@ -65,7 +65,7 @@ function main() {
         ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
     else
         bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)";
-        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;;
+        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
     fi
 
 
