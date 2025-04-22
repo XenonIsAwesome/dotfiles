@@ -32,32 +32,38 @@ function install_misc() {
 }
 
 function clone_dotfiles() {
+    
     # Install git
     if ! command -v git &> /dev/null; then
+        echo "Installing git.";
         sudo apt install -y git;
     fi;
 
     # Clone repo
     if [ ! -d "${HOME}/.dotfiles" ]; then
+        echo "Installing dotfiles.";
         git clone http://github.com/XenonIsAwesome/dotfiles.git ~/.dotfiles;
     fi
 
     # Update repo
     pushd ~/.dotfiles 2>&1 >/dev/null
+    echo "Updating dotfiles.";
     git pull
     popd 2>&1 >/dev/null
 }
 
 function main() {
-    echo "Installing dotfiles.";
+    # repo
     clone_dotfiles;
 
+    # installs
     install_docker;
+    install_python_packages;
     install_misc;
 
+    # dotfiles
     ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
     ln -sf $HOME/.dotfiles/scripts $HOME/;
-    echo "Installation successful";
 }
 
 main "$@"
