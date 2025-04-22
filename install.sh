@@ -27,6 +27,10 @@ function install_python_packages() {
     sudo apt install -y python3-pip python3-bs4 python3-virtualenv
 }
 
+function install_build_stuff() {
+    sudo apt install -y build-essential cmake
+}
+
 function install_misc() {
     sudo apt install -y bat
 }
@@ -59,6 +63,7 @@ function main() {
     # installs
     install_docker;
     install_python_packages;
+    install_build_stuff;
     install_misc;
 
     if [ "$1" = "--omb" ]; then
