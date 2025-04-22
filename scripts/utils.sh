@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Functions
-source ~/mcservers/rcon.sh
+if test -f ~/mcservers/rcon.sh; then
+    source ~/mcservers/rcon.sh
+fi
 
 function correct-resolv() {
     # Run this to correct WSL's resolv.conf file (dns issue)

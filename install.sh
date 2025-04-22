@@ -50,7 +50,7 @@ function main() {
 
     install_all;
 
-    ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
+    ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
     ln -sf $HOME/.dotfiles/scripts $HOME/;
     echo "Installation successful";
 }
