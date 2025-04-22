@@ -40,4 +40,4 @@ source ~/scripts/docker_aliases.sh
 alias urltool='~/scripts/urlquote_tool.py'
 alias cat='batcat'
 alias browser='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
-alias genpush='git add . && git commit -m \"updated some files\" && git push'
+alias genpush='git add . && git commit -m "updated some files" && git push'
