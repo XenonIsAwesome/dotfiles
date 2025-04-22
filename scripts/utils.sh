@@ -31,6 +31,26 @@ function commando() {
         sudo apt install $packages
 }
 
+function wtargz() {
+    url=$@
+
+    filename=$(basename $url)
+    wget -q $url
+    
+    tar xzf $filename
+    rm $filename
+}
+
+function wzip() {
+    url=$@
+
+    filename=$(basename $url)
+    wget -q $url
+    
+    unzip -q $filename
+    rm $filename
+}
+
 # Exports
 export PYTHONDONTWRITEBYTECODE=1
 
@@ -41,3 +61,4 @@ alias urltool='~/scripts/urlquote_tool.py'
 alias cat='batcat'
 alias browser='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 alias genpush='git add . && git commit -m "updated some files" && git push'
+alias hextool='python3 -c "import sys; print(bytes(sys.stdin.buffer.read()).hex())"'

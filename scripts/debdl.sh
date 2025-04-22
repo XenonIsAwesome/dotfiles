@@ -1,66 +1,27 @@
-#!/usr/bin/env bash
 
-set -e
+function debdl() {
+    tmpdir=$(mktemp -d)
+    workdir=$(mktemp -d)
 
-# --- CONFIG ---
-IMAGE_TAG="debdl-temp"
-WORKDIR="/tmp/debdl"
-ARCHIVE="debs.tar.gz"
+    PACKAGES_HASH=$(echo "$@" | sha256sum | cut -c1-16)
 
-PYTHON_HELPER="$(dirname $(realpath "$0"))/get_ubuntu_ver.py"
+    # moving old debs to tmp
+    sudo mv /var/cache/apt/archives/*.deb $tmpdir 2>/dev/null || true
 
-# --- FUNCTIONS ---
+    # moving new debs to workdir
+    sudo apt-get reinstall -y --download-only "$@"
+    sudo mv /var/cache/apt/archives/*.deb $workdir
+    
+    # moving old debs back to archives
+    sudo mv $tmpdir/*.deb /var/cache/apt/archives/ 2>/dev/null || true
+    
+    # making tar
+    pushd $workdir 2>&1 >/dev/null
+    tar czf "debs-${PACKAGES_HASH}.tar.gz" *.deb
+    popd 2>&1 >/dev/null
 
-# Check if input is a valid Ubuntu version or codename
-is_version_string() {
-    [[ "$1" =~ ^[0-9]+\.[0-9]+([a-zA-Z]*)$ || "$1" =~ ^[a-z]+$ ]]
+    # moving tar to cwd
+    mv "${workdir}/debs-${PACKAGES_HASH}.tar.gz" ./
 }
 
-main() {
-    if [[ $# -eq 0 ]]; then
-        echo "Usage: debdl [ubuntu-version] <package1> [package2 ...]"
-        exit 1
-    fi
-
-    if is_version_string "$1"; then
-        VERSION="$1"
-        shift
-    else
-        VERSION="$(lsb_release -cs)"
-    fi
-
-    if [[ ! -f "$PYTHON_HELPER" ]]; then
-        echo "Missing required file: $PYTHON_HELPER"
-        exit 1
-    fi
-
-    CODENAME=$(python3 "$PYTHON_HELPER" "$VERSION")
-    if [[ -z "$CODENAME" ]]; then
-        echo "Could not determine Ubuntu codename for version: $VERSION"
-        exit 1
-    fi
-
-    PACKAGES=("$@")
-    if [[ ${#PACKAGES[@]} -eq 0 ]]; then
-        echo "No packages specified."
-        exit 1
-    fi
-
-    mkdir -p "$WORKDIR"
-    echo "Downloading packages for Ubuntu $CODENAME: ${PACKAGES[*]}"
-
-    docker run --rm -v "$WORKDIR":/out ubuntu:"$CODENAME" bash -c "
-        apt-get update -qq &&
-        apt-get install -y -qq apt-utils apt-transport-https &&
-        apt-get install -y -qq gdebi-core &&
-        cd /out &&
-        apt-get download \$(apt-cache depends ${PACKAGES[*]} | grep 'Depends:' | awk '{print \$2}' | sort -u; echo ${PACKAGES[*]}) ||
-        apt-get download ${PACKAGES[*]}
-    "
-
-    tar -czf "$ARCHIVE" -C "$WORKDIR" .
-    echo "✅ Archive created: $ARCHIVE"
-    rm -rf "$WORKDIR"
-}
-
-main "$@"
+debdl "$@"
