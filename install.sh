@@ -1,6 +1,4 @@
-function install_git() {
-    
-}
+#!/usr/bin/env bash
 
 function install_docker() {
     if ! command -v docker &> /dev/null; then
