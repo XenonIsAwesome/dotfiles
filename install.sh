@@ -31,6 +31,12 @@ function install_build_stuff() {
     sudo apt install -y build-essential cmake
 }
 
+function install_ohmybash() {
+    if [ ! -d "${HOME}/.oh-my-bash/" ]; then
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+    fi
+}
+
 function install_misc() {
     sudo apt install -y bat
 }
@@ -67,11 +73,11 @@ function main() {
     install_misc;
 
     # .bashrc
-    if [ "$1" = "--omb" ]; then
-        bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)";
-        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
-    else
+    if [ "$1" = "--no-omb" ]; then
         ln -sf $HOME/.dotfiles/.bashrc $HOME/.bashrc;
+    else
+        install_ohmybash;
+        ln -sf $HOME/.dotfiles/.bashrc.omb $HOME/.bashrc;
     fi
 
 
