@@ -51,6 +51,16 @@ function wzip() {
     rm $filename
 }
 
+function playground() {
+	if [ -z $1 ]; then
+		cd ~/playground;
+		return 0;
+	fi
+
+	~/scripts/playground.py "$@"
+}
+
+
 # Exports
 export PYTHONDONTWRITEBYTECODE=1
 
@@ -58,7 +68,11 @@ export PYTHONDONTWRITEBYTECODE=1
 source ~/scripts/docker_aliases.sh
 
 alias urltool='~/scripts/urlquote_tool.py'
+alias ncat='/usr/bin/cat'
 alias cat='batcat'
+alias sl='ls'
 alias browser='/mnt/c/Program\ Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 alias genpush='git add . && git commit -m "updated some files" && git push'
 alias hextool='python3 -c "import sys; print(bytes(sys.stdin.buffer.read()).hex())"'
+alias pkgfilter='python3 -c "import re, sys; print(\"\\n\".join(re.findall(r\"Inst (\S+)\", sys.stdin.read())))"'
+alias pg='playground'
